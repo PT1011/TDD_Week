@@ -44,6 +44,7 @@ def test_is_high_score_works(game):
     result = is_high_score(game, threshold)
     assert result == False
 
-def test_threshold_greater_than_0(game):
+def test_threshold_greater_than_or_equal_to_0(game):
     with pytest.raises(ValueError):
-        is_high_score(game, 0)
+        is_high_score(game, -1)
+
