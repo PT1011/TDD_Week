@@ -16,6 +16,7 @@ def apply_multiplier(game,multiplier):
     else:
         game["multiplier"] = multiplier
         return game
-
+        
 def reset_score(game):
     pass
+
