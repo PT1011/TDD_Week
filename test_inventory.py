@@ -14,8 +14,8 @@ def test_add_item_rejects_on_full(full_inventory):
         add_item(full_inventory, "67")
 
 def test_add_item_rejects_on_locked(locked_inventory):
-    result = add_item(locked_inventory, "Sword")
-    assert "Sword" not in result["items"]
+    result = add_item(locked_inventory, "Shield")
+    assert result["items"] == ["sword"]
 
 def test_remove_item_works(empty_inventory):
     empty_inventory["items"] = ["b","a","b"]
@@ -26,9 +26,9 @@ def test_remove_item_rejects_unkown_item(full_inventory):
     with pytest.raises(ValueError):
         remove_item(full_inventory, "b")
 
-def test_locked_inventory_csnnot_be_removed(locked_inventory):
-    result = remove_item(locked_inventory, "Sword")
-    assert "Sword" in result["items"]
+def test_locked_inventory_cannot_be_removed(locked_inventory):
+    result = remove_item(locked_inventory, "sword")
+    assert "sword" in result["items"]
 
 def test_get_item_count_works(full_inventory):
     result = get_item_count(full_inventory)
