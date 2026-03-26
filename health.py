@@ -14,4 +14,3 @@ def heal(player, amount):
 
 def is_alive(player):
     return player["alive"] and player["health"] > 0
-
