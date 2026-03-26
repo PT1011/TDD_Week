@@ -57,4 +57,3 @@ def test_is_high_score_works(game):
 def test_threshold_greater_than_or_equal_to_0(game):
     with pytest.raises(ValueError):
         is_high_score(game, -1)
-
