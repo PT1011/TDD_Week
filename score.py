@@ -31,4 +31,3 @@ def is_high_score(game, threshold):
         return True
     else:
         return False
-
