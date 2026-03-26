@@ -1,53 +1,60 @@
 import pytest
-from inventory import add_item, remove_item, get_item_count
+from score import add_points, apply_multiplier, reset_score, is_high_score
 
 
-def test_add_item_works_on_empty(empty_inventory):
-    result = add_item(empty_inventory, "Sword")
-    assert "Sword" in result["items"]
+def test_add_points_works(game):
+    result = add_points(game, 10)
+    assert result["score"] == 10
 
 
-def test_add_item_rejects_empty_string_on_empty(empty_inventory):
+def test_add_points_rejects_negative(game):
     with pytest.raises(ValueError):
-        add_item(empty_inventory, "")
+        add_points(game, -5)
 
 
-def test_add_item_rejects_on_full(full_inventory):
+def test_no_points_added_when_inactive(game):
+    game["active"] = False
+    result = add_points(game, 10)
+    assert result["score"] == 0
+
+
+def test_multiplier_updates(game):
+    result = apply_multiplier(game, 2)
+    assert result["multiplier"] == 2
+
+
+def test_multiplier_rejects_less_than_1(game):
     with pytest.raises(ValueError):
-        add_item(full_inventory, "67")
+        apply_multiplier(game, 0.5)
 
 
-def test_add_item_rejects_on_locked(locked_inventory):
-    result = add_item(locked_inventory, "Shield")
-    assert result["items"] == ["sword"]
+def test_no_multiplier_added_when_inactive(game):
+    game["active"] = False
+    game["score"] = 2
+    result = apply_multiplier(game, 2)
+    assert result["score"] == 2
 
 
-def test_remove_item_works(empty_inventory):
-    empty_inventory["items"] = ["b","a","b"]
-    result = remove_item(empty_inventory, "b")
-    assert result["items"] == ["a","b"]
+def test_reset_score_works(game):
+    result = reset_score(game)
+    assert result["score"] == 0 and result["multiplier"] == 1
 
 
-def test_remove_item_rejects_unkown_item(full_inventory):
+def test_reset_score_works_when_inactive(game):
+    game["active"] = False
+    game["score"] = 2
+    game["multiplier"] = 2
+    result = reset_score(game)
+    assert result["score"] == 0 and result["multiplier"] == 1
+
+
+def test_is_high_score_works(game):
+    threshold = 1
+    result = is_high_score(game, threshold)
+    assert not result
+
+
+def test_threshold_greater_than_or_equal_to_0(game):
     with pytest.raises(ValueError):
-        remove_item(full_inventory, "b")
+        is_high_score(game, -1)
 
-
-def test_locked_inventory_cannot_be_removed(locked_inventory):
-    result = remove_item(locked_inventory, "sword")
-    assert "sword" in result["items"]
-
-
-def test_get_item_count_works(full_inventory):
-    result = get_item_count(full_inventory)
-    assert result == 10
-
-
-def test_get_item_count_returns_zero(empty_inventory):
-    result = get_item_count(empty_inventory)
-    assert result == 0
-
-
-def test_get_item_count_works_on_locked(locked_inventory):
-    result = get_item_count(locked_inventory)
-    assert result == 1
