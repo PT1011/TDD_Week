@@ -14,4 +14,3 @@ def test_heal_adds_health(player):
 def test_player_dies(player):
     result = take_damage(player, 100)
     assert not result["alive"]
-    
