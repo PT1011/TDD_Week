@@ -22,4 +22,3 @@ def remove_item(inventory, item):
 
 def get_item_count(inventory):
     return len(inventory["items"])
-
