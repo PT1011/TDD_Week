@@ -24,4 +24,3 @@ def full_inventory():
 @pytest.fixture
 def locked_inventory():
     return {"items": ["sword"], "capacity": 10, "locked": True}
-
